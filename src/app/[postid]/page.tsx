@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { redirect } from "next/navigation";
+import NewSkeleton from "@/components/NewSkeleton";
 
 type Post = {
   id: number;
@@ -23,19 +23,22 @@ type Post = {
 };
 
 export default function Page({ params }: { params: { postid: string } }) {
+  const [loading, setLoading] = useState(true);
   const [post, setPost] = useState<Post[]>([{ id: 0, title: "", content: "" }]);
   const router = useRouter();
   useEffect(() => {
     try {
       const fetchPost = async () => {
+        await setLoading(true);
         const response = await axios.get<Post[]>(
-          "http://localhost:7676/api/posts/" + params.postid
+          "https://blogapp-backend-n7sv.onrender.com/api/posts/" + params.postid
         );
         // console.log(response.data);
         if (!response.data || Object.keys(response.data).length === 0) {
           router.push("/notfound");
         }
         setPost(response.data);
+        await setLoading(false);
       };
 
       fetchPost();
@@ -50,7 +53,10 @@ export default function Page({ params }: { params: { postid: string } }) {
 
   const handleClick = async () => {
     try {
-      await axios.delete("http://localhost:7676/api/posts/" + params.postid);
+      // await setLoading(true);
+      await axios.delete(
+        "https://blogapp-backend-n7sv.onrender.com/api/posts/" + params.postid
+      );
       alert("Post deleted successfully");
       router.push("/");
     } catch (err) {
@@ -63,6 +69,14 @@ export default function Page({ params }: { params: { postid: string } }) {
       <>
         <div>Blank</div>
       </>
+    );
+
+  if (loading)
+    return (
+      <div className="p-4">
+        Loading...
+        <NewSkeleton />
+      </div>
     );
   return (
     <div>

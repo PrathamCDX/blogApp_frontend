@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -39,7 +38,7 @@ export default function NewForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       console.log(values);
-      const response = await axios.post("http://localhost:7676/api/posts", {
+      await axios.post("https://blogapp-backend-n7sv.onrender.com/api/posts", {
         title: values.title,
         content: values.content,
       });

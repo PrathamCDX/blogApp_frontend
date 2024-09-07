@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { renderContext } from "@/app/page";
 
-type setRenderType = (prevRender: number) => number;
+// type setRenderType = (prevRender: number) => number;
 
 export default function DeleteButton({ id }: { id: number }) {
   const context = useContext(renderContext);
@@ -27,13 +27,13 @@ export default function DeleteButton({ id }: { id: number }) {
     try {
       // Perform delete request
       const response = await axios.delete(
-        `http://localhost:7676/api/posts/${id}`
+        `https://blogapp-backend-n7sv.onrender.com/api/posts/${id}`
       );
 
       // Check if deletion was successful
       if (response.status === 200) {
         // Update the render state to force re-fetching of posts
-        setRender((prevRender) => prevRender + 1);
+        setRender(render + 1);
       } else {
         console.error("Failed to delete the post.");
       }

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag, revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 export default async function action() {
   revalidatePath("/", "layout");
