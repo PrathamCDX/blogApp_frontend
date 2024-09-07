@@ -92,6 +92,14 @@ export default function Page({ params }: { params: { postid: string } }) {
             <AlertDialogTrigger asChild>
               <Button variant="destructive">Delete Blog</Button>
             </AlertDialogTrigger>
+            <span
+              onClick={() => {
+                router.push(`/edit/${post[0].id}`);
+              }}
+              className="ml-5 px-3"
+            >
+              <Button variant="constructive">Edit Blog</Button>
+            </span>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -110,7 +118,7 @@ export default function Page({ params }: { params: { postid: string } }) {
           </AlertDialog>
         </div>
       </div>
-      <div className="mx-2 text-lg">{post[0].content}</div>
+      <div className="mx-2  text-lg">{post[0].content}</div>
     </div>
   );
 }
