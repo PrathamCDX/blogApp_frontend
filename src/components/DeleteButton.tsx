@@ -1,5 +1,5 @@
 "use client";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,6 +18,7 @@ import { renderContext } from "@/app/page";
 // type setRenderType = (prevRender: number) => number;
 
 export default function DeleteButton({ id }: { id: number }) {
+  const [loading, setLoading] = useState(false);
   const context = useContext(renderContext);
   if (!context) return null;
 
@@ -25,18 +26,17 @@ export default function DeleteButton({ id }: { id: number }) {
 
   const handleClick = async () => {
     try {
-      // Perform delete request
+      setLoading(true);
       const response = await axios.delete(
         `https://blogapp-backend-n7sv.onrender.com/api/posts/${id}`
       );
 
-      // Check if deletion was successful
       if (response.status === 200) {
-        // Update the render state to force re-fetching of posts
-        setRender(render + 1);
+        setRender({ reRender: true });
       } else {
         console.error("Failed to delete the post.");
       }
+      setLoading(false);
       alert("Post deleted successfully");
     } catch (error) {
       console.error("Error deleting the post:", error);
@@ -59,7 +59,10 @@ export default function DeleteButton({ id }: { id: number }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleClick}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={handleClick}>
+            {loading ? <div>Deleting..</div> : <div>Continue</div>}
+            {/* <div>Continue</div> */}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
