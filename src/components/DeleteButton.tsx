@@ -22,7 +22,7 @@ export default function DeleteButton({ id }: { id: number }) {
   const context = useContext(renderContext);
   if (!context) return null;
 
-  const { render, setRender } = context;
+  const {  setRender } = context;
 
   const handleClick = async () => {
     try {
