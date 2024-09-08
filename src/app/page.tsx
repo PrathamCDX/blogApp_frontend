@@ -12,10 +12,13 @@ type Post = {
 };
 
 type RenderContextType = {
-  render: number;
-  setRender: (
-    render: number
-  ) => void | React.Dispatch<React.SetStateAction<number>> | null;
+  render: { reRender: boolean };
+  setRender: React.Dispatch<
+    React.SetStateAction<{
+      reRender: boolean;
+    }>
+  >;
+  // setRender:  React.Dispatch<React.SetStateAction<number>> | null;
 };
 
 export const renderContext = createContext<RenderContextType | null>(null);
@@ -23,7 +26,7 @@ export const renderContext = createContext<RenderContextType | null>(null);
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [render, setRender] = useState(0);
+  const [render, setRender] = useState({ reRender: true });
   const [allPosts, setAllPosts] = useState<Post[]>([]);
 
   useEffect(() => {
