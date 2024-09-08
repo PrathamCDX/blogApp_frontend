@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
+import { useState } from "react";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -38,16 +39,19 @@ export default function NewEditForm(props: {
     },
   });
 
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       // console.log(props);
+      setLoading(true);
       console.log(values);
       await axios.put("https://blogapp-backend-n7sv.onrender.com/api/posts", {
         id: props.id,
         title: values.title,
         content: values.content,
       });
+      setLoading(false);
       alert("Post Edited successfully");
       router.push("/");
     } catch (err) {
@@ -55,6 +59,12 @@ export default function NewEditForm(props: {
       alert("Post could not be Edited ");
     }
   }
+
+  // if (loading) {
+  //   return (
+  //     <div className="text-xl text-center font-extrabold">Saving Edit...</div>
+  //   );
+  // }
 
   return (
     <Form {...form}>
@@ -87,7 +97,12 @@ export default function NewEditForm(props: {
             </FormItem>
           )}
         />
-        <Button type="submit">Confirm Edit</Button>
+        {loading ? (
+          <Button type="submit">Saving blog</Button>
+        ) : (
+          <Button type="submit">Confirm Edit</Button>
+        )}
+        {/* <Button type="submit">Edit Blog</Button> */}
       </form>
     </Form>
   );
