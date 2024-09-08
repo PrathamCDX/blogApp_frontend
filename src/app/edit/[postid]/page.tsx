@@ -46,7 +46,7 @@ export default function Page({ params }: { params: { postid: string } }) {
 
   return (
     <div>
-      <div>
+      <div className="p-4">
         <NewEditForm
           id={post[0].id}
           title={post[0].title}
