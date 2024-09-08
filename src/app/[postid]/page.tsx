@@ -23,6 +23,7 @@ type Post = {
 };
 
 export default function Page({ params }: { params: { postid: string } }) {
+  const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState<Post[]>([{ id: 0, title: "", content: "" }]);
   const router = useRouter();
@@ -53,11 +54,13 @@ export default function Page({ params }: { params: { postid: string } }) {
 
   const handleClick = async () => {
     try {
+      setDeleting(true);
       // await setLoading(true);
       await axios.delete(
         "https://blogapp-backend-n7sv.onrender.com/api/posts/" + params.postid
       );
       alert("Post deleted successfully");
+      setDeleting(true);
       router.push("/");
     } catch (err) {
       alert("Post deletion unsuccessful");
@@ -90,7 +93,9 @@ export default function Page({ params }: { params: { postid: string } }) {
           </Button> */}
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive">Delete Blog</Button>
+              <Button variant="destructive">
+                {deleting ? <div>Deleting....</div> : <div>Delete Blog</div>}
+              </Button>
             </AlertDialogTrigger>
             <span
               onClick={() => {
@@ -111,7 +116,7 @@ export default function Page({ params }: { params: { postid: string } }) {
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction onClick={handleClick}>
-                  Continue
+                  {deleting ? <div>Deleting..</div> : <div>Continue</div>}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
